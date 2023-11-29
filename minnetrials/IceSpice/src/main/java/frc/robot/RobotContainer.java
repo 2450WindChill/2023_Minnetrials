@@ -32,20 +32,34 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
+
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
 
   static CommandXboxController m_driverController = new CommandXboxController(0);
-  private final DumpySubsystem dumpySubsystem = new DumpySubsystem();
-  private final LumpySubsystem lumpySubsystem = new LumpySubsystem();
+  // private final DumpySubsystem dumpySubsystem = new DumpySubsystem();
+  // private final LumpySubsystem lumpySubsystem = new LumpySubsystem();
   private final DriveySubsystem driveySubsystem = new DriveySubsystem();
 
+  private ShmooveCommand m_shmooveCommand = new ShmooveCommand(driveySubsystem, 10.0);
 
+  public void containerTeleopPeriodic() {
+    // Tank drive with a given left and right rates
+    // driveySubsystem.mDrive.tankDrive(-leftStick.getY(), -rightStick.getY());
+
+    // Arcade drive with a given forward and turn rate
+    driveySubsystem.drive(m_driverController);
+
+    // Curvature drive with a given forward and turn rate, as well as a button for turning in-place.
+    // myDrive.curvatureDrive(-driveStick.getY(), -driveStick.getX(), driveStick.getButton(1));
+}
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings(); 
+
   }
 
   /**
@@ -64,13 +78,13 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.a().whileTrue(new TestMotorsCommand(dumpySubsystem));
-    m_driverController.b().whileTrue(new ArmCommand(lumpySubsystem, 0.1));
-    m_driverController.x().whileTrue(new ArmCommand(lumpySubsystem, -0.1));
+    // m_driverController.a().whileTrue(new TestMotorsCommand(dumpySubsystem));
+    // m_driverController.b().whileTrue(new ArmCommand(lumpySubsystem, 0.1));
+    // m_driverController.x().whileTrue(new ArmCommand(lumpySubsystem, -0.1));
     // WITH SHMOOVECOMMAND, USE NEGATIVE NUMBERS OR THE ROBOT WILL BREAK AND THAT IS NOT GOOD
-    m_driverController.rightBumper().onTrue(new ShmooveCommand(lumpySubsystem, -51.0, -49.0));
-    m_driverController.leftBumper().onTrue(new ShmooveCommand(lumpySubsystem, -91.0, -89.0));
-    m_driverController.rightTrigger().whileTrue(new VroomCommand(driveySubsystem, 0.5));
+    // m_driverController.rightBumper().onTrue(new ShmooveCommand(lumpySubsystem, -51.0, -49.0));
+    // m_driverController.leftBumper().onTrue(new ShmooveCommand(lumpySubsystem, -91.0, -89.0));
+    // m_driverController.rightTrigger().whileTrue(new VroomCommand(driveySubsystem, 0.5));
   }
 
   /**
@@ -80,6 +94,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return m_shmooveCommand;
   }
 }

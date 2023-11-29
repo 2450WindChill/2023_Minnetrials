@@ -5,11 +5,14 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class DriveySubsystem extends SubsystemBase {
 
@@ -18,11 +21,20 @@ public class DriveySubsystem extends SubsystemBase {
   public final CANSparkMax motorLOne = new CANSparkMax(3, MotorType.kBrushed);
   public final CANSparkMax motorLTwo = new CANSparkMax(4, MotorType.kBrushed);
 
-  public final MotorControllerGroup rightMotor = new MotorControllerGroup(motorROne, motorRTwo);
+  public final RelativeEncoder legEncoder = motorROne.getEncoder();
+
   public final MotorControllerGroup leftMotor = new MotorControllerGroup(motorLOne, motorLTwo);
+  public final MotorControllerGroup rightMotor = new MotorControllerGroup(motorROne, motorRTwo);
+
+  public DifferentialDrive mDrive = new DifferentialDrive(leftMotor, rightMotor);
   
   /** Creates a new ExampleSubsystem. */
-  public DriveySubsystem() {}
+  public DriveySubsystem() {
+    motorROne.setInverted(true);
+    motorLOne.setInverted(true);
+    motorRTwo.setInverted(true);
+    motorLTwo.setInverted(true);
+  }
 
   /**
    * Example command factory method.
@@ -57,4 +69,19 @@ public class DriveySubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
+
+  public void drive(CommandXboxController controller) {
+    mDrive.arcadeDrive(controller.getLeftY() * 0.6, controller.getLeftX() * 0.75);
+  }
+
+    
+
+  public void fullSendYeetGo() {
+    mDrive.arcadeDrive(0.6, 0);
+  }
+
+  public void itsJoever() {
+    mDrive.arcadeDrive(0.0, 0);
+  }
+
 }
