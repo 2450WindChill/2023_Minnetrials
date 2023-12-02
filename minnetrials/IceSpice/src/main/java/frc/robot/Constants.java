@@ -15,5 +15,12 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+   
   }
+
+  public static double pidTolerance = 1;
+  public static double nonPidTolerance = 0;
+
+  public static double frontIntakeAngle = 2.26;
+  public static double midRowPlacingAngle = 13.02;
 }

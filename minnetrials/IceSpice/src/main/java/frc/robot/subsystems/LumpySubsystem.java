@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,16 +17,34 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LumpySubsystem extends SubsystemBase {
   
-  public final CANSparkMax armMotor = new CANSparkMax(17, MotorType.kBrushless);
+  public final CANSparkMax armMotor = new CANSparkMax(5, MotorType.kBrushless);
   public final RelativeEncoder armEncoder = armMotor.getEncoder();
   
-  public LumpySubsystem() {}
+  public LumpySubsystem() {
+   
+  }
 
   /**
    * Example command factory method.
    *
    * @return a command
    */
+
+   public void ManualInputs(XboxController xbox) {
+    if ((xbox.getLeftX() < .15) && (xbox.getLeftX() > -0.15)) {
+      armMotor.set(0);
+    }
+    else {
+      armMotor.set(xbox.getLeftX() / 5);
+
+    }
+
+  }
+
+
+
+
+
   public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.

@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -21,7 +22,8 @@ public class DriveySubsystem extends SubsystemBase {
   public final CANSparkMax motorLOne = new CANSparkMax(3, MotorType.kBrushed);
   public final CANSparkMax motorLTwo = new CANSparkMax(4, MotorType.kBrushed);
 
-  public final RelativeEncoder legEncoder = motorROne.getEncoder();
+  //public final RelativeEncoder legEncoder = motorROne.getEncoder();
+  //REVISE LATER RAAAH (rewrite without encoder bc that is illegal to use with brushed) :(
 
   public final MotorControllerGroup leftMotor = new MotorControllerGroup(motorLOne, motorLTwo);
   public final MotorControllerGroup rightMotor = new MotorControllerGroup(motorROne, motorRTwo);
@@ -50,16 +52,6 @@ public class DriveySubsystem extends SubsystemBase {
         });
   }
 
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -70,14 +62,14 @@ public class DriveySubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void drive(CommandXboxController controller) {
+  public void drive(XboxController controller) {
     mDrive.arcadeDrive(controller.getLeftY() * 0.6, controller.getLeftX() * 0.75);
   }
 
     
 
   public void fullSendYeetGo() {
-    mDrive.arcadeDrive(0.6, 0);
+    mDrive.arcadeDrive(0.3, 0);
   }
 
   public void itsJoever() {

@@ -17,17 +17,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ShmooveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DriveySubsystem robot;
-  private Double startingDistance = 0.0;
-  private Double m_driveyDistance = 0.0;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ShmooveCommand(DriveySubsystem subsystem, Double driveyDistance) {
+  public ShmooveCommand(DriveySubsystem subsystem) {
     robot = subsystem;
-    m_driveyDistance = driveyDistance;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -35,7 +32,6 @@ public class ShmooveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startingDistance = robot.legEncoder.getPosition();
     robot.fullSendYeetGo();
   }
 
@@ -48,18 +44,12 @@ public class ShmooveCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    robot.itsJoever();
+    // robot.itsJoever();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    double legPosition = robot.legEncoder.getPosition();
-
-    if (legPosition < (m_driveyDistance + startingDistance)) {
-      return false;
-    } else {
-      return true;
-    }
+    return false;
   }
 }
